@@ -77,26 +77,22 @@ public class Enemy : MonoBehaviour
          * Implement a simple AI, which will head towards the closest player and follow them.
          */
          
-        //store player position in a variable
-        Transform PlayerPos = GameManager.Instance.NearestPlayer(transform.position).transform;
+        var targetPlayer = GameManager.Instance.NearestPlayer(transform.position);
 
-        //if not null
-        if (GameManager.Instance.NearestPlayer(transform.position)!= null)
+        if (targetPlayer != null)
         {
-            //if not
-            if (PlayerPos != null)
-            {
-                // makes enemies go towards the player
+            Transform playerTransform = targetPlayer.transform;
 
-                Vector3 direction = PlayerPos.position - transform.position;
+            Vector3 direction = playerTransform.position - transform.position;
+
+            if (direction != Vector3.zero)
+            {
                 mRigidBody.rotation = Quaternion.LookRotation(direction, Vector3.forward);
-                mRigidBody.MovePosition(transform.position + direction.normalized * speed * Time.deltaTime);
             }
 
+            mRigidBody.MovePosition(transform.position + direction.normalized * speed * Time.deltaTime);
+
         }
-
-
-
     }
 
     /// <summary>
